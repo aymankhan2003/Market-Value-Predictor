@@ -1,42 +1,32 @@
 ﻿Project’s Abstract:
 
+Goal: We are trying to find a machine learning approach that estimates the future transfer market value (according to https://www.transfermarkt.us) of a soccer player.1
 
-* We are trying to find a machine learning approach to estimate the future transfer market value (according to  of a soccer player .
-* 
+Transfer Market: A market where clubs can sell and buy players for a certain price. 
 
-1. Transfer Market: A market where clubs can sell and buy players for a certain price. 
+Success: Able to accurately predict market values. Auditing for biases in the transfer market and in our model. 
 
-
-* Success: Able to accurately predict market values. Auditing for biases in the transfer market and in our model. 
-* 
-
-https://medium.com/analytics-vidhya/machine-learning-project-predicting-football-players-market-value-fd40636462bf
-
-
-https://towardsdatascience.com/predicting-market-value-of-fifa-soccer-players-with-regression-5d79aed207d9
 
 
 
 
 https://sofifa.com/
 
-
-* Approach: 
-* Scrape data from Sofifa
-* Explore training data with tables and visuals
-* Prepare the data for model training 
-* Choose features 
-* Pick and fit an appropriate model
-* Examine the model's success on training data
-* Apply successful model on validation (test) data or pick new model if model is unsuccessful during training
-* Bias Findings
-
-
+Approach: 
+Scrape data from Sofifa //An- The data from initial market valuation will be scraped from transfermarkt.com, while the 
+Explore training data with tables and visuals //Hedavam
+Prepare the data for model training: We need to make sure that all of our data is in a format that allows us to perform quantitative analyses. We suspect that most of our data will consist of numbers, with a few notable exceptions like nationality or club. Nonetheless,  //Hedavam
+Choose features. Our group members have some insight on what features may be useful for our purposes since they’re soccer fans. We would like for our model to be able to use as many useful features as possible, but understand that for convenience it would be ideal to manually subset features. Thereafter, we will try to use well-documented feature selection algorithms.   //Hedavam + An
+Pick and fit an appropriate model
+Examine the model's success on training data
+Apply successful model on validation (test) data or pick new model if model is unsuccessful during training
+Bias Findings
 
 
 “Full success.” What will your deliverable be if everything works out for you exactly as you plan?
-* The model will be able to predict future market values and the current market value of players as accurately as possible for a player based on different features scraped from the datasets.
+The model will be able to predict future market values and the current market value of players as accurately as possible for a player based on different features scraped from the datasets.
 
+“Partial success.” What useful deliverable will you be able to offer even if things don’t 100% work out? For example, maybe you aren’t able to get that webapp together, but you can still 
+create a code repository that showcases the machine learning pipeline you need to use to support the app. Have a contingency plan!
+If things don't work out 100%, instead of having a model that will predict future market values, then we will have a model that predicts the current market value.
 
-“Partial success.” What useful deliverable will you be able to offer even if things don’t 100% work out? For example, maybe you aren’t able to get that webapp together, but you can still create a code repository that showcases the machine learning pipeline you need to use to support the app. Have a contingency plan!
-* If things don't work out 100%, instead of having a model that will predict future market values, then we will have a model that predicts the current market value.
