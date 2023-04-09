@@ -63,4 +63,12 @@ What you will learn?
 
 Ayman: Through this project, I will be able to gain practical experience with the concept of implementation and experimentation. I am hoping to learn how to play around with the data, clean it up, and feature-engineer it as we prepare it for testing through this project because we will be leveraging existing algorithms to test our data to anticipate our goals. Overall, we will use a large amount of data to estimate market values, and this will teach me how to analyze different data sets while building our model utilizing existing machine learning algorithms.
 
+Risk Statement:
+
+- Overreliance on data itself can produce falsy results.
+- Inconsistent pattern within statistics of different players can cause the model to lag once again producing falsy results.
+- Some players are injured in real time, where the model cannot detect that which can effect the predictions accuracy.
+- External economic factors such as inflation, interest rates, etc. can also cause inaccurate predictions.
+
+
 
