@@ -59,4 +59,8 @@ If things don't work out 100%, instead of having a model that will predict futur
 Resources Required:
 As of now, we have decided the sources for our training data for the most part. However, we have not decided on a specific source to get the data for players’ match performance which accounts for features listed in number 3 in the approach  section. We found a few free sources such as understat.com that we could use, but we don’t know about the data's accuracy and how it was collected. Alternatively, we have communicated with a few reliable sources where the data is not behind a paywall; however, accessing the data requires their authorization. We are waiting to hear back from these sources.
 
+What you will learn?
+
+Ayman: Through this project, I will be able to gain practical experience with the concept of implementation and experimentation. I am hoping to learn how to play around with the data, clean it up, and feature-engineer it as we prepare it for testing through this project because we will be leveraging existing algorithms to test our data to anticipate our goals. Overall, we will use a large amount of data to estimate market values, and this will teach me how to analyze different data sets while building our model utilizing existing machine learning algorithms.
+
 
