@@ -1,15 +1,15 @@
+Google Doc for better readibility: https://docs.google.com/document/d/1xAJUftKyE9jGaI2rVNjYCvToG8IWtUu8lHBfT-h7EMY/edit#
 
 Project’s Abstract:
 
-Goal:
-The goal of this project is to use machine learning techniques to predict the transfer market value1 and potential transfer fee2 of a soccer player based on their performance metrics  for the playing season and factors behind performance metrics such as age, position and other relevant features. 
+Goal: The goal of this project is to use machine learning techniques to predict the transfer market value1 and potential transfer fee2 of a soccer player based on their performance metrics  for the playing season and factors behind performance metrics such as age, position and other relevant features. 
 
 1 Market value is an estimate of how much a soccer player is worth based on their skills, potential, and other factors.
 
 2 Transfer fee represents the amount of money a seller club charges in exchange for allowing a player to transfer to a buyer club. Usually the market value is the least amount of money a seller club charges for a player.
 
-What problems are we addressing?
-The two problems we will be addressing are: Come up with a reproducible process, that can estimate the transfer market value of a player. Secondly, what would be a realistic amount that a seller club should charge(transfer fee) to the buyer club.
+What problem are we addressing?
+The two problems we will be addressing are: Come up with a reproducible process that can estimate the transfer market value of a player. Secondly, what would be a realistic amount that a seller club should charge(transfer fee) to the buyer club.
 
 Description of problems we are addressing:
 The soccer industry moves billions of dollars around the world in player transfers. Only last summer, English teams spent a total of €2.25 billion while Italian clubs spent €700 million and Spanish clubs spent 500 million in buying players. Most transfer market player valuations that are available to the public are crowd sourced. So the first problem that we are trying to solve is coming up with a model that estimates a player’s transfer market value based on match performances as well as crowd-sourced data. Our model would be based on a reproducible process, and not just based on the wisdom of a community.
@@ -21,54 +21,121 @@ Ultimately, we want to come up with a model that could estimate how the ultimate
 
 
 Approach: 
-Scrape data: 
-Sofifa.com- Features: Player Ratings, Player Potentials
+Scrape data:
+ Sofifa.com- Features: Player Ratings, Player Potentials
 Sofifa contains all player ratings and their potential ratings from FIFA games developed by EA Sports. EA Sports update provides ratings to players based on crowdsourced reports from a community of over 6,000 FIFA Data Reviewers or Talent Scouts from all over the world are constantly providing suggestions and alterations to their database(https://www.goal.com/en-us/news/fifa-player-ratings-explained-how-are-the-card-number--stats-decided/1hszd2fgr7wgf1n2b2yjdpgynu). These ratings are updated everyweek, and Sofifa updates their database everyweek accordingly. The two features that we will be using from soFifa are player ratings and player Potentials.
 
 TransferMarkt.com-  Features: Market Value, Remaining Contract Length, Age, Nationality, Club
-Transfer market is a commonly used website by football enthusiasts to find player’s market valuations. On their website, transfermarkt state that they do not use an algorithm but instead relies on the wisdom of the community. However they state the the community relies on performance metrics such as goals scored, dribbles completed, trends of the market, demand/interest of the player and other factors: https://www.transfermarkt.co.in/transfermarkt-market-value-explained-how-is-it-determined-/view/news/385100
+Transfer market is a commonly used website by football enthusiasts to find player’s market valuations. On their website, transfermarkt states that they do not use an algorithm to find players’ market value but instead rely on the wisdom of the community. However they state the the community relies on performance metrics such as goals scored, dribbles completed, trends of the market, demand/interest of the player and other factors: https://www.transfermarkt.co.in/transfermarkt-market-value-explained-how-is-it-determined-/view/news/385100
 
-According to a report published in https://www.sciencedirect.com/science/article/abs/pii/S037722172100895X, transferkarkt and other crowdsourced data has been found to be susceptible to bias. We will keep that in mind when presenting our findings.
+According to a report published in https://www.sciencedirect.com/science/article/abs/pii/S037722172100895X, transfermarkt has been found to be susceptible to bias. We will keep that in mind when presenting our findings.
 
-WhoScored.com- Features: Match Ratings, Goals Scored, Assists, Clean Sheets, Dribbles completed, Number of Appearances and International Appearances.
+WhoScored.com(yet to be decided)- Features: Match Ratings, Goals Scored, Assists, Clean Sheets, Dribbles completed, Number of Appearances and International Appearances.
 
 WhoScored.com contains the real life plate’s performance metrics such as goals scored, assists and other features mentioned above. Because these numbers are based on player’s performances, it is not affected by bias.
 
-Explore training data with tables and visuals 
-Prepare the data for model training: We need to make sure that all of our data is in a format that allows us to perform quantitative analyses. We suspect that most of our data will consist of numbers, with a few notable exceptions like nationality or club. Nonetheless,  
-Choose features. Our group members have some insight on what features may be useful for our purposes since they’re soccer fans. We would like for our model to be able to use as many useful features as possible, but understand that for convenience it would be ideal to manually subset features. Thereafter, we will try to use well-documented feature selection algorithms.  
-Pick and fit an appropriate model
-Examine the model's success on training data
-Apply successful model on validation (test) data or pick new model if model is unsuccessful during training
-Bias Findings
+TransferMarkt.com(Clubs)- Features: Club’s Market Value, Transfer Expenditures, League Position, Number of Goals Scored, Possession per Game, Tackles per Game
 
-Motivation and Question:
+Explore training data with tables and visuals
+Some ideas:
+Current stats vs. current market value
+Group by position, age, years left on contract
+Fifa potential statistic vs. future market value
+Evolution of average transfer fees paid by clubs over time
+Prepare the data for model training: 
+We need to make sure that all of our data is in a tidy format that allows us to perform quantitative analyses. 
+We suspect that most of our data will consist of numbers, with a few notable exceptions like nationality or club. 
+We need to make sure that our numerical data is not represented as strings or characters, which will complicate things and that our qualitative data can be easily parsed. 
+Split into test-train data
+Choose features:
+Our group members have some insight on what features may be useful for our purposes since they’re soccer fans. We would like for our model to be able to use as many useful features as possible, but understand that for convenience it would be ideal to manually subset features. 
+Thereafter, we will try to use common feature selection algorithms to simplify the feature selection process and prevent overfitting.  
+Pick and fit an appropriate model
+Since our goal is to predict numerical values, regression models like Linear or Lasso would be useful.
+Settling on a specific regression model will be a more involved task, likely dependant on our feature complexity trial & error 
+We plan on using out-of-the-box algorithms for model fitting.
+Examine the model's success on training data
+Pick new model/features, or tune hyperparameters if model accuracy on training data is undesired. 
+Fit model again & examine success.
+Examine model’s success on validation data
+Check for overfitting 	
+Audit for Bias
+
+Motivation and Question
 
 Our passion for soccer and our interest in the transfer market have motivated us to embark on this project. By leveraging the knowledge we have gained in our class and using performance data, we aim to develop a more accurate and systematic approach for estimating a player's value in the transfer market. We believe that such an approach, which is not solely based on the community's wisdom, could yield better valuations.
 
 Moreover, unlike transfer market valuations, which are often seen as a minimum price, transfer fees are what clubs ultimately pay for acquiring a player. Thus, our project's focus on estimating the transfer fee is more applicable to the real-world context of the soccer industry.
 
-Planned Deliverables:
-“Full success.” What will your deliverable be if everything works out for you exactly as you plan?
-The model will be able to predict future market values and the current market value of players as accurately as possible for a player based on different features scraped from the datasets.
 
-“Partial success.” What useful deliverable will you be able to offer even if things don’t 100% work out? For example, maybe you aren’t able to get that webapp together, but you can still 
-create a code repository that showcases the machine learning pipeline you need to use to support the app. Have a contingency plan!
-If things don't work out 100%, instead of having a model that will predict future market values, then we will have a model that predicts the current market value.
+Planned Deliverables
+
+Partial success:
+We will have an executable code repository that showcases the machine learning 
+pipeline to estimate the transfer market value of a player.
+
+Full success: 
+Our vision for full success is to develop a user-friendly web application that can accurately estimate both the transfer market value and transfer fee of soccer players. The web application will feature intuitive search functionality, including four search boxes for entering a player's name, selling club, and buying club.
+
+Future Additions: 
+If we manage to achieve full success and still have time remaining to keep working on the project, we would like to try to estimate future market values of players (maybe for a 3 year window, and hopefully a longer one if possible). Surely, this is a more involved task because the factors for calculating player potential are more complex, but the payoff will be more useful as clubs could use this information as another tool for scouting as they could invest in recruiting players who will be profitable in the near future.
+
+ 
 
 Resources Required:
-As of now, we have decided the sources for our training data for the most part. However, we have not decided on a specific source to get the data for players’ match performance which accounts for features listed in number 3 in the approach  section. We found a few free sources such as understat.com that we could use, but we don’t know about the data's accuracy and how it was collected. Alternatively, we have communicated with a few reliable sources where the data is not behind a paywall; however, accessing the data requires their authorization. We are waiting to hear back from these sources.
+
+As of now, we have decided the sources for our training for the most part. However, we have not decided on a specific source to get the data for players’ match performance which accounts for features listed in number 3 in the approach  section. We found a few free sources such as understat.com that we could use, but we don’t know how the data was collected and its accuracy. Alternatively, we have communicated with a few reliable sources that have restrictions on data sources and we are waiting to hear from them.
 
 What you will learn?
 
+An: Through this project, I will get to learn about implementing new models in machine learning. I am also very curious about what bias would look like in an industry where players from certain regions have been more successful in the past, so are valued more. In our final presentation, we want to talk briefly about bias assessment  and present our findings.
+
+Hedavam: I want to get acquainted with real-world ML practices through this project. Going through the process of scraping and cleaning up data is  something I want to get good at because without good data, it’s hard to perform useful analysis. I’m also excited to learn more about which feature-engineering practices and ML models work best for our type of prediction analysis. Lastly, trying to account for both bias in our model and in current soccer market practices is something I look forward to since issues like racism in soccer have been historically prevalent. 
+
+
+
 Ayman: Through this project, I will be able to gain practical experience with the concept of implementation and experimentation. I am hoping to learn how to play around with the data, clean it up, and feature-engineer it as we prepare it for testing through this project because we will be leveraging existing algorithms to test our data to anticipate our goals. Overall, we will use a large amount of data to estimate market values, and this will teach me how to analyze different data sets while building our model utilizing existing machine learning algorithms.
 
-Risk Statement:
 
-- Overreliance on data itself can produce falsy results.
-- Inconsistent pattern within statistics of different players can cause the model to lag once again producing falsy results.
-- Some players are injured in real time, where the model cannot detect that which can effect the predictions accuracy.
-- External economic factors such as inflation, interest rates, etc. can also cause inaccurate predictions.
+
+
+Risk statement:
+Some of our data sources are crowd-sourced, and thus can have bias so that could lead to inaccurate estimations. 
+Inconsistent patterns within statistics of different players can cause the model to lag once again producing falsy results.
+Some players have a long history of injuries and usually have low market values regardless of their performances. Our model will not keep an account for past injuries, so some estimations will be incorrect.
+External economic factors such as inflation, clauses, etc. can also cause inaccurate predictions.
+
+
+Ethic statement:
+What groups of people have the potential to benefit from our project?
+Soccer enthusiasts and Soccer Clubs.
+ Will the world become an overall better place because we made our project?
+Our project aims to predict market valuations and we believe that it would be beneficial for soccer clubs to have an algorithmic approach for player valuations. So we are assuming that:
+Quantitative data alone is enough to estimate a player valuation.
+Using algorithmic approaches to find market values and transfer fees would be a better approach for buying/selling clubs. (maybe not in terms of profitability.)
+
+
+Tentative timeline:
+
+
+Week 3: 
+Player data will have been collected and prepared for model training. 
+Come up with interesting data visualizations relating to market value 
+Feature-engineering on player data will have been done to a level allowing us to start training an out-of-the-box algorithm for predicting market value. 
+
+Week 6: 
+A more refined model producing higher accuracy on testing data will have been implemented for market value prediction.
+Come up with interesting data visualizations relating to transfer fees  
+Data collection & preparation as well as feature-engineering on club data will have been done to a level allowing us to start training an out-of-the-box algorithm for predicting transfer fee, that we will refine as much as possible given our time constraints. 
+Build web-app
+Work on predicting future market values, if we’re satisfied with our current market value & transfer fee models and if time permits.
+
+
+
+
+Additional Resources: 
+
+https://theathletic.com/3085749/2022/01/27/premier-league-how-do-you-value-a-player/
 
 
 
