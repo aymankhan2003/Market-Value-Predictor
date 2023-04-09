@@ -1,4 +1,4 @@
-﻿Project’s Abstract:
+Project’s Abstract:
 
 Goal: We are trying to find a machine learning approach that estimates the future transfer market value (according to https://www.transfermarkt.us) of a soccer player.1
 
@@ -7,13 +7,20 @@ Transfer Market: A market where clubs can sell and buy players for a certain pri
 Success: Able to accurately predict market values. Auditing for biases in the transfer market and in our model. 
 
 
-
-
-
-https://sofifa.com/
-
 Approach: 
-Scrape data from Sofifa //An- The data from initial market valuation will be scraped from transfermarkt.com, while the 
+Scrape data:
+ Sofifa.com- Features: Player Ratings, Player Potentials
+Sofifa contains all player ratings and their potential ratings from FIFA games developed by EA Sports. EA Sports update provides ratings to players based on crowdsourced reports from a community of over 6,000 FIFA Data Reviewers or Talent Scouts from all over the world are constantly providing suggestions and alterations to their database(https://www.goal.com/en-us/news/fifa-player-ratings-explained-how-are-the-card-number--stats-decided/1hszd2fgr7wgf1n2b2yjdpgynu). These ratings are updated everyweek, and Sofifa updates their database everyweek accordingly. The two features that we will be using from soFifa are player ratings and player Potentials.
+
+TransferMarkt.com-  Features: Market Value, Remaining Contract Length, Age, Nationality, Club
+Transfer market is a commonly used website by football enthusiasts to find player’s market valuations. On their website, transfermarkt state that they do not use an algorithm but instead relies on the wisdom of the community. However they state the the community relies on performance metrics such as goals scored, dribbles completed, trends of the market, demand/interest of the player and other factors: https://www.transfermarkt.co.in/transfermarkt-market-value-explained-how-is-it-determined-/view/news/385100
+
+According to a report published in https://www.sciencedirect.com/science/article/abs/pii/S037722172100895X, transferkarkt and other crowdsourced data has been found to be susceptible to bias. We will keep that in mind when presenting our findings.
+
+WhoScored.com- Features: Match Ratings, Goals Scored, Assists, Clean Sheets, Dribbles completed, Number of Appearances and International Appearances.
+
+WhoScored.com contains the real life plate’s performance metrics such as goals scored, assists and other features mentioned above. Because these numbers are based on player’s performances, it is not affected by bias.
+
 Explore training data with tables and visuals //Hedavam
 Prepare the data for model training: We need to make sure that all of our data is in a format that allows us to perform quantitative analyses. We suspect that most of our data will consist of numbers, with a few notable exceptions like nationality or club. Nonetheless,  //Hedavam
 Choose features. Our group members have some insight on what features may be useful for our purposes since they’re soccer fans. We would like for our model to be able to use as many useful features as possible, but understand that for convenience it would be ideal to manually subset features. Thereafter, we will try to use well-documented feature selection algorithms.   //Hedavam + An
