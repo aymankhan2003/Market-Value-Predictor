@@ -30,4 +30,6 @@ while (x < 5641) {
   x <- x + 60
 }
 
+write.csv(prestable, file = 'sofifadata.csv', row.names = FALSE)
+
 
