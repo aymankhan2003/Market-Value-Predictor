@@ -14,11 +14,11 @@ urls <- c(
   "https://www.transfermarkt.us/eredivisie/tabelle/wettbewerb/NL1/saison_id/2018",
   "https://www.transfermarkt.us/super-lig/tabelle/wettbewerb/TR1?saison_id=2018",
   "https://www.transfermarkt.us/professional-football-league/jahrestabelle/wettbewerb/AR1N/saison_id/2018",
-  "https://www.transfermarkt.us/campeonato-brasileiro-serie-a/tabelle/wettbewerb/BRA1/saison_id/2017"
-  
+  "https://www.transfermarkt.us/campeonato-brasileiro-serie-a/tabelle/wettbewerb/BRA1/saison_id/2017",
+  "https://www.transfermarkt.us/ligue-1/tabelle/wettbewerb/FR1?saison_id=2018"
 )
 
-leagues <- c("Premier League", "Serie A", "LaLiga", "Bundesliga","LigaNOS","Eredivisie","SuperLig","ProfessionalFootballLeague","CampeonatoBrasileiroSerieA")
+leagues <- c("Premier League", "Serie A", "LaLiga", "Bundesliga","LigaNOS","Eredivisie","SuperLig","ProfessionalFootballLeague","CampeonatoBrasileiroSerieA","League 1")
 
 # Initialize an empty data frame to store the scraped data
 all_data <- data.frame()
@@ -52,18 +52,19 @@ for (i in seq_along(urls)) {
 }
 
 #Adding data from the Argentinian league manually from transfermarkt.com
-url_arg<-"https://www.transfermarkt.us/professional-football-league/jahrestabelle/wettbewerb/AR1N/saison_id/2018"
+link_arg<-"https://www.transfermarkt.us/professional-football-league/jahrestabelle/wettbewerb/AR1N/saison_id/2018"
 tablexpath_arg <- '//*[@id="main"]/main/div[2]/div[1]/div/table' 
-league_data_arg <- try(url_arg %>%
+# Try to scrape the table, and skip the iteration if it's not found
+league_arg <- try(link_arg%>%
                      read_html() %>%
                      html_element(xpath = tablexpath_arg) %>%
                      html_table(), silent = TRUE)
 
-league_data_arg$Club<-NULL
-colnames(league_data_arg) <- c("Pos", "Club", "GP", "W", "D", "L", "GR", "GD", "Points")
-
-all_data <- rbind(all_data, league_data_arg%>%mutate(league="ProfessionalFootballLeague"))
-
+colnames(league_arg) <- c("Pos", "img", "Club", "GP", "W", "D", "L", "GR", "GD", "Points")
+league_arg$img <- NULL
+league_arg$league<-"Professional League"
+# Assuming that league_arg and all_data have the same column names
+all_data <- rbind(all_data, league_arg)
 
 
 all_data$Club <- gsub(" FC", "", all_data$Club, ignore.case = TRUE)
@@ -82,12 +83,13 @@ league_links <- c(
   "https://www.transfermarkt.us/eredivisie/startseite/wettbewerb/NL1/plus/?saison_id=2018",
   "https://www.transfermarkt.us/super-lig/startseite/wettbewerb/TR1/plus/?saison_id=2018",
   "https://www.transfermarkt.us/professional-football-league/startseite/wettbewerb/AR1N/plus/?saison_id=2018",
-  "https://www.transfermarkt.us/campeonato-brasileiro-serie-a/startseite/wettbewerb/BRA1/plus/?saison_id=2017"
+  "https://www.transfermarkt.us/campeonato-brasileiro-serie-a/startseite/wettbewerb/BRA1/plus/?saison_id=2017",
+  "https://www.transfermarkt.com/ligue-1/tabelle/wettbewerb/FR1?saison_id=2018"
 )
 
 # create a vector of league names
 league_names <- c(
-  "Premier League","Serie A","LaLiga","Bundesliga","LigaNOS","Eredivisie","SuperLig","ProfessionalFootballLeague","CampeonatoBrasileiroSerieA")
+  "Premier League","Serie A","LaLiga","Bundesliga","LigaNOS","Eredivisie","SuperLig","ProfessionalFootballLeague","CampeonatoBrasileiroSerieA", "League 1")
 
 # create an empty dataframe to store the results
 club_df <- data.frame()
@@ -110,6 +112,24 @@ for (i in seq_along(league_links)) {
   # bind the results to the club_df dataframe
   club_df <- rbind(club_df, p)
 }
+
+#manually adding league 1(French League)
+link1<-"https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id=2018"
+club1<-data.frame()
+xpath3 <- '//*[@id="yw1"]/table'
+p1 <- try(
+  link1 %>% read_html() %>% html_element(xpath = xpath3) %>% html_table(),
+  silent = TRUE
+)
+p1$Club <- NULL
+colnames(p1) <- c("Club", "Squad", "AVGage", "Foreigners", "AVGPlayerValue", "TotalPlayerValue")
+p1[7] <- NULL
+p1[5] <- NULL
+p1 <- p1[-1,]
+# add a column for the current league name
+p1$League <- "League 1"
+# bind the results to the club_df dataframe
+club_df <- rbind(club_df, p1)
 
 #Cleaning the club_df dataset
 # reset the row names of the club_df dataframe
@@ -262,7 +282,8 @@ new_club_names <- c("Wolves" = "Wolverhampton Wanderers",
                     "Arsenal Sarandí" = "Arsenal de Sarandí",
                     "CA Temperley" = "Club Atlético Temperley",
                     "Chacarita Jrs." = "Club Atlético Chacarita Juniors",
-                    "Olimpo" = "Club Olimpo")
+                    "Olimpo" = "Club Olimpo",
+                    "Saint-Étienne"=" AS Saint-Étienne","Paris SG" = "Paris Saint-Germain", "Monaco"="AS Monaco","Marseille"="Olympic Marseille","Montpellier"="Montpellier HSC","Real Betis "="Real Betis Balompié")
 
 # Use str_replace_all() to replace the club names in club_df with the new names
 updated_data$Club <- str_replace_all(updated_data$Club, new_club_names)
@@ -270,12 +291,88 @@ updated_data$Club <- str_replace_all(updated_data$Club, new_club_names)
 merged_data <- merge(club_df, updated_data, by = "Club")
 merged_data$League.y<-NULL
 
-write.csv(merged_data, file = "merged_data.csv", row.names = FALSE)
+missing_clubs3 <- setdiff(updated_data$Club, club_df$Club)
+missing_clubs4 <- setdiff( club_df$Club,updated_data$Club)
 
-View(merged_data)
+write.csv(merged_data, file = "club_data1.csv", row.names = FALSE)
+
+club_data <- read_csv("club_data.csv")
 
 
+#For the Team & Contract column, seperate Team and Contract in 2 different columns. Use the contract column and subtract it from 2019 to find the remaining duration of the contract.
+player_data<- read_csv("player_data.csv")
 
+
+player_data <- player_data %>%
+  mutate(`Years Left` = as.numeric(str_extract(`Team & Contract`, "(?<=~\\s)\\d{4}"))-2019)
+
+player_data$`Team & Contract` <- gsub(" ~ ", "", player_data$`Team & Contract`)
+player_data$`Team & Contract` <- gsub("\\b\\d{8}\\b", "", player_data$`Team & Contract`)
+player_data$Club<-player_data$`Team & Contract` 
+player_data$`Team & Contract`<-NULL
+
+player_data <- player_data %>%
+  select(1:2, Club, 3:ncol(player_data)-1)
+
+player_data$Club <- str_trim(player_data$Club, side = "right")
+
+merged_data <- merge(player_data, club_data, by = "Club")
+
+player_data$Weight_new<-as.numeric(str_extract(player_data$Weight, "\\d+"))
+
+nrow(distinct(player_data, Club))
+nrow(distinct(club_data, Club))
+
+#transfer fee from 2019/2020
+TM_link<-"https://www.transfermarkt.us/transfers/transferrekorde/statistik/top/plus/0/galerie/0?saison_id=2019&land_id=&ausrichtung=Sturm&spielerposition_id=&altersklasse=&jahrgang=0&leihe=&w_s="
+
+TMatt<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/transferfee/Forwards.csv")
+View(TM_att)
+TMatt$Position<-"Forward"
+colnames(TM_att) <- trimws(colnames(TM_att))
+TMatt <- TM_att%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
+TMatt$name<-TM_att$hauptlink
+TMatt$transfer_fee<-TMatt$rechts
+TMatt$detailed_position<-TMatt$inline.table
+TMatt$league<-TMatt$inline.table.2
+TMatt$club<-TMatt$hauptlink.2
+TMatt<-TMatt%>%select(name,transfer_fee,Position,club,league,detailed_position)
+
+TMdef<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/transferfee/defenders.csv")
+TMdef$Position<-"Defence"
+colnames(TMdef) <- trimws(colnames(TMdef))
+TMdef <- TMdef%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
+TMdef$name<-TMdef$hauptlink
+TMdef$transfer_fee<-TMdef$rechts
+TMdef$detailed_position<-TMdef$inline.table
+TMdef$league<-TMdef$inline.table.2
+TMdef$club<-TMdef$hauptlink.2
+TMdef<-TMdef%>%select(name,transfer_fee,Position,club,league,detailed_position)
+
+
+TMmid<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/transferfee/Midfielders.csv")
+TMmid$Position<-"Midfield"
+colnames(TMmid) <- trimws(colnames(TMmid))
+TMmid <- TMmid%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
+TMmid$name<-TMmid$hauptlink
+TMmid$transfer_fee<-TMmid$rechts
+TMmid$detailed_position<-TMmid$inline.table
+TMmid$league<-TMmid$inline.table.2
+TMmid$club<-TMmid$hauptlink.2
+TMmid<-TMmid%>%select(name,transfer_fee,Position,club,league,detailed_position)
+
+TMgk<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/transferfee/GKs.csv")
+TMgk$Position<-"GK"
+colnames(TMgk) <- trimws(colnames(TMgk))
+TMgk <- TMgk%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
+TMgk$name<-TMgk$hauptlink
+TMgk$transfer_fee<-TMgk$rechts
+TMgk$detailed_position<-TMgk$inline.table
+TMgk$league<-TMgk$inline.table.2
+TMgk$club<-TMgk$hauptlink.2
+TMgk<-TMgk%>%select(name,transfer_fee,Position,club,league,detailed_position)
+
+colnames(TMatt)
 
 
 
