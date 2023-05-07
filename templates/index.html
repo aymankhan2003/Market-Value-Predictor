@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Player Market Value</title>
+</head>
+<body>
+    <h1>Player Market Value</h1>
+    <form method="POST">
+        <label for="player_name">Enter player name:</label>
+        <input type="text" name="player_name" id="player_name" required>
+
+        <br>
+
+        <label for="position">Enter position:</label>
+        <select name="position" id="position" required>
+            <option value="Attacker">Attacker</option>
+            <option value="Midfielder">Midfielder</option>
+            <option value="Defender">Defender</option>
+            <option value="Goalkeeper">Goalkeeper</option>
+        </select>
+
+        <br>
+
+        <button type="submit" name="submit">Get market value</button>
+        <button type="button" onclick="resetForm()">Reset</button>
+        <button type="button" name="accuracy"><a href="/accuracy">Accuracy</a></button>
+    </form>
+
+    <p id="result">{{ result }}</p>
+
+    <script>
+        function resetForm() {
+            document.getElementById("player_name").value = "";
+            document.getElementById("position").selectedIndex = 0;
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
+</body>
+</html>
