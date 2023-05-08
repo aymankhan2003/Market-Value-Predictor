@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, redirect, url_for
 from marketvaluemodule import midfield_player, goalkeep_player, defend_player, attacking_player, model_score
 import os
 
@@ -17,8 +17,8 @@ def home():
 def accuracy():
     accuracy = model_score()
     accuracy = int(accuracy * 100)
-    result = f"Accuracy of our model is {accuracy}%"
-    return render_template('index.html', result=result)
+    accuracy_result = f"Accuracy of our model is {accuracy}%"
+    return render_template('index.html', result=accuracy_result)
 
 @app.route('/', methods=['POST'])
 def get_value():
