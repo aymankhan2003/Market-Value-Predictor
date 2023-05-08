@@ -228,7 +228,7 @@ for (i in 1:nrow(updated_data)) {
 
 View(updated_data)
 
-#Last attemp on matching the CLub names by manually creating  a mapping List
+#Last attempt on matching the CLub names by manually creating  a mapping List
 #checking what clubs that exist in club_df are missing in updated_data
 missing_clubs1 <- setdiff(club_df$Club, updated_data$Club)
 
