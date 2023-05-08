@@ -113,6 +113,7 @@ for (i in seq_along(league_links)) {
   club_df <- rbind(club_df, p)
 }
 
+
 #manually adding league 1(French League)
 link1<-"https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id=2018"
 club1<-data.frame()
@@ -329,9 +330,9 @@ TM_link<-"https://www.transfermarkt.us/transfers/transferrekorde/statistik/top/p
 TMatt<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/transferfee/Forwards.csv")
 View(TM_att)
 TMatt$Position<-"Forward"
-colnames(TM_att) <- trimws(colnames(TM_att))
-TMatt <- TM_att%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
-TMatt$name<-TM_att$hauptlink
+colnames(TMatt) <- trimws(colnames(TMatt))
+TMatt <- TMatt%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
+TMatt$name<-TMatt$hauptlink
 TMatt$transfer_fee<-TMatt$rechts
 TMatt$detailed_position<-TMatt$inline.table
 TMatt$league<-TMatt$inline.table.2
@@ -364,15 +365,265 @@ TMmid<-TMmid%>%select(name,transfer_fee,Position,club,league,detailed_position)
 TMgk<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/transferfee/GKs.csv")
 TMgk$Position<-"GK"
 colnames(TMgk) <- trimws(colnames(TMgk))
-TMgk <- TMgk%>%select(hauptlink, Position, `inline.table`, hauptlink.2, `inline.table.2`, rechts)
+TMgk <- TMgk%>%select(hauptlink, Position, hauptlink.2, `inline.table.2`, rechts)
 TMgk$name<-TMgk$hauptlink
 TMgk$transfer_fee<-TMgk$rechts
-TMgk$detailed_position<-TMgk$inline.table
 TMgk$league<-TMgk$inline.table.2
 TMgk$club<-TMgk$hauptlink.2
-TMgk<-TMgk%>%select(name,transfer_fee,Position,club,league,detailed_position)
+TMgk<-TMgk%>%select(name,transfer_fee,Position,club,league)
 
-colnames(TMatt)
+#TM_att
+TMatt<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/TransferFee Data/TMatt.csv")
+TMatt<-TMatt %>%
+  mutate(name = iconv(name, from = "UTF-8", to = "ASCII//TRANSLIT"))
+
+club_data<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/club_data.csv")
+club_data$club<-club_data$Club
+club_data$Club<-NULL
+  
+club_data <- club_data %>% distinct(Club, .keep_all = TRUE)
+
+
+#mapping list
+mapping_list <- c("Man Utd" = "Manchester United",
+                                    "Atlético Madrid" = "Atletico Madrid",
+                                    "Barcelona" = "Barcelona",
+                                    "Monaco" = "AS Monaco",
+                                    "Zenit S-Pb" = "Zenit St. Petersburg",
+                                    "Wolves" = "Wolverhampton Wanderers",
+                                    "Leicester" = "Leicester City",
+                                    "Tottenham" = "Tottenham Hotspur",
+                                    "Real Betis" = "Real Betis",
+                                    "Bor. Dortmund" = "Borussia Dortmund",
+                                    "SH SIPG" = "Shanghai SIPG",
+                                    "Aston Villa" = "Aston Villa",
+                                    "Villarreal" = "Villarreal CF",
+                                    "Espanyol" = "RCD Espanyol",
+                                    "LOSC Lille" = "Lille OSC",
+                                    "E. Frankfurt" = "Eintracht Frankfurt",
+                                    "Rennes" = "Stade Rennais FC",
+                                    "OGC Nice" = "OGC Nice",
+                                    "Benfica" = "SL Benfica",
+                                    "Dinamo Moscow" = "FC Dinamo Moscow",
+                                    "Sheff Utd" = "Sheffield United",
+                                    "DL Pro" = "DL Pro",
+                                    "Paris SG" = "Paris Saint-Germain",
+                                    "Newcastle" = "Newcastle United",
+                                    "Flamengo" = "CR Flamengo",
+                                    "Bournemouth" = "AFC Bournemouth",
+                                    "SH Shenhua" = "Shanghai Greenland Shenhua",
+                                    "Ajax" = "AFC Ajax",
+                                    "Brighton" = "Brighton & Hove Albion",
+                                    "UD Almería" = "UD Almeria",
+                                    "Bologna" = "Bologna FC 1909",
+                                    "B. Leverkusen" = "Bayer 04 Leverkusen",
+                                    "Valencia" = "Valencia CF",
+                                    "Marseille" = "Olympique Marseille",
+                                    "Huddersfield" = "Huddersfield Town",
+                                    "TSG Hoffenheim" = "TSG 1899 Hoffenheim",
+                                    "Olympique Lyon" = "Olympique Lyonnais",
+                                    "RB Salzburg" = "FC Red Bull Salzburg",
+                                    "Fiorentina" = "ACF Fiorentina",
+                                    "Bor. M'gladbach" = "Borussia Monchengladbach",
+                                    "Lazio" = "SS Lazio",
+                                    "LAFC" = "Los Angeles FC",
+                                    "G. Bordeaux" = "FC Girondins de Bordeaux",
+                                    "Chivas" = "CD Guadalajara",
+                                    "Monterrey" = "CF Monterrey",
+                                    "Tigres UANL" = "Tigres UANL",
+                                    "West Brom" = "West Bromwich Albion",
+                                    "Kansas City" = "Sporting Kansas City",
+                                    "Los Angeles" = "LA Galaxy",
+                                    "Juventus U19" = "Juventus U19",
+                                    "Miami" = "Inter Miami CF",
+                                    "Club Brugge" = "Club Brugge KV",
+                                    "Toulouse" = "Toulouse FC",
+                                    "Sassuolo" = "US Sassuolo Calcio",
+                                    "Reading" = "Reading FC",
+                                    "Rangers" = "Rangers FC",
+                  "Bologna" = "Bologna FC 1909",
+                  "Rubin Kazan" = "FC Rubin Kazan",
+                  "Genoa" = "Genoa CFC",
+                  "KRC Genk" = "KRC Genk",
+                  "Al-Duhail SC" = "Al-Duhail SC",
+                  "F. Düsseldorf" = "Fortuna Düsseldorf",
+                  "Werder Bremen" = "SV Werder Bremen",
+                  "Brentford" = "Brentford FC",
+                  "Blackburn" = "Blackburn Rovers",
+                  "New England" = "New England Revolution",
+                  "RSC Anderlecht" = "RSC Anderlecht",
+                  "Palmeiras" = "SE Palmeiras",
+                  "Amiens SC" = "Amiens SC",
+                  "Getafe" = "Getafe CF",
+                  "Cardiff" = "Cardiff City",
+                  "Sporting CP" = "Sporting CP",
+                  "RB Bragantino" = "RB Bragantino",
+                  "Lazio U19" = "Lazio U19",
+                  "CD Cruz Azul" = "CD Cruz Azul",
+                  "GZ Evergrande" = "Guangzhou Evergrande Taobao FC",
+                  "SZ" = "Shenzhen FC")
+
+TMatt$club <- gsub("Man Utd", "Manchester United", TMatt$club)
+
+
+TMatt$club <- gsub(" U23", "", TMatt$club)
+
+# remove "FC" from the TMatt$club column
+TMatt$club <- gsub(" FC", "", TMatt$club)
+
+TMatt$club <- gsub("Inter", "Inter Milan", TMatt$club)
+
+# replace "West Ham" with "West Ham United" in the TMatt$club column
+TMatt$club <- gsub("West Ham", "West Ham United", TMatt$club)
+
+club_data$club <- gsub(" FC", "", club_data$club)
+
+
+TMatt_clubs <- unique(TMatt$club)
+
+# get the unique club names from the club_data$club column
+club_data_clubs <- unique(club_data$club)
+
+# find the club names that are in TMatt_clubs but not in club_data_clubs
+missing_clubs <- setdiff(TMatt_clubs, club_data_clubs)
+
+missing_clubs2 <- setdiff(club_data_clubs,TMatt_clubs)
+
+TMatt$club <- str_replace_all(TMatt$club, mapping_list)
+
+# merge the TMatt and club_data data frames based on the "club" column
+att_club <- merge(TMatt, club_data, by = "club")
+write.csv(att_club, file = "att_club.csv", row.names = FALSE)
+TMmid<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/TransferMarkt/TMmid.csv")
+
+TMmid<-TMmid %>%
+  mutate(name = iconv(name, from = "UTF-8", to = "ASCII//TRANSLIT"))
+
+TMmid$club <- gsub("Man Utd", "Manchester United", TMmid$club)
+
+TMmid$club <- gsub(" U23", "", TMmid$club)
+
+# remove "FC" from the TMatt$club column
+TMmid$club <- gsub(" FC", "", TMmid$club)
+
+TMmid$club <- gsub("Inter", "Inter Milan", TMmid$club)
+
+# replace "West Ham" with "West Ham United" in the TMatt$club column
+TMmid$club <- gsub("West Ham", "West Ham United", TMmid$club)
+
+club_data$club <- gsub(" FC", "", club_data$club)
+club_data$club <- gsub("FC ", "", club_data$club)
+
+
+
+TMmid$club <- str_replace_all(TMmid$club, mapping_list)
+
+att_mid <- merge(TMmid, club_data, by = "club")
+
+write.csv(att_mid, file ="att_mid.csv", row.names = FALSE)
+
+
+TMdef<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/TransferFee Data/TMdef.csv")
+
+TMdef$club<-trimws(TMdef$club)
+TMdef$name<-trimws(TMdef$name)
+
+TMdef$club <- gsub("Man Utd", "Manchester United", TMdef$club)
+
+TMdef$club <- gsub(" U23", "", TMdef$club)
+
+# remove "FC" from the TMatt$club column
+TMdef$club <- gsub(" FC", "", TMdef$club)
+
+TMdef$club <- gsub("Inter", "Inter Milan", TMdef$club)
+
+# replace "West Ham" with "West Ham United" in the TMatt$club column
+TMdef$club <- gsub("West Ham", "West Ham United", TMdef$club)
+
+club_data$club <- club_data$Club
+  
+club_data$club <- gsub(" FC", "", club_data$club)
+club_data$club <- gsub("FC ", "", club_data$club)
+
+
+
+
+TMdef$club <- str_replace_all(TMdef$club, mapping_list)
+
+club_def <- merge(TMdef, club_data, by = "club")
+
+write.csv(club_def, file ="club_def.csv", row.names = FALSE)
+
+
+
+
+
+
+
+# print the merged data frame
+print(merged_data)
+
+write.csv(TMatt, file = "TMatt.csv", row.names = FALSE)
+write.csv(TMdef, file = "TMdef.csv", row.names = FALSE)
+write.csv(TMmid, file = "TMmid.csv", row.names = FALSE)
+write.csv(TMgk, file = "TMgk.csv", row.names = FALSE)
+
+
+
+
+
+
+#####Sunday May7#####
+
+df1<- read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/TransferFee Data/Club_players/att_club.csv")
+df2<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/TransferFee Data/Club_players/att_mid.csv")
+df3<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/TransferFee Data/Club_players/club_def.csv")
+pl.df<-read.csv("/Users/anweshanadhikari/Documents/Market-Value-Predictor/cleaned_playerdata.csv")
+
+pl.df$Name<-trimws(pl.df$Name)
+
+
+dfm <- rbind(df1, df2, df3)
+dfm$name<-trimws(dfm$name)
+
+dfm$name <- sapply(dfm$name, format_name)
+
+
+# Custom function to format player names
+format_name <- function(name) {
+  name_split <- strsplit(name, " ")[[1]]
+  num_words <- length(name_split)
+  
+  # If the name is in the correct format or only a single word, return it as is
+  if (num_words == 1 || grepl("^[A-Z]\\.", name_split[1])) {
+    return(name)
+  }
+  
+  # If the name has more than one word, return the first letter of the first word followed by ". " and the last word
+  formatted_name <- paste0(substr(name_split[1], 1, 1), ". ", name_split[num_words])
+  return(formatted_name)
+}
+
+# Apply the custom function to the 'Name' column
+
+pl.df$Name <- sapply(pl.df$Name, format_name)
+dfm$Name<-dfm$name
+
+combined_df <- merge(dfm, pl.df, by = "Name")
+
+write.csv(combined_df, file = "TM_MV_Club.csv", row.names = FALSE)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
