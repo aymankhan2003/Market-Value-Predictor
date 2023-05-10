@@ -9,7 +9,7 @@ import os
 
 path = os.getcwd()
 
-os.chdir("/Users/anweshanadhikari/Documents/Market-Value-Predictor")
+os.chdir("/Users/ayman/OneDrive/Documents/GitHub/Market-Value-Predictor")
 
 def readall_data():
     data = pd.read_csv("upd_pldata.csv")

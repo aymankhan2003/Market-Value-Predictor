@@ -4,7 +4,7 @@ import os
 
 path = os.getcwd()
 
-os.chdir("/Users/anweshanadhikari/Documents/Market-Value-Predictor")
+os.chdir("/Users/ayman/OneDrive/Documents/GitHub/Market-Value-Predictor")
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -51,5 +51,3 @@ def get_value():
 
 if __name__ == '__main__':
     app.run(debug=True)
- 
- 
