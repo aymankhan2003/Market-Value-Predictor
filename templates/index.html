@@ -1,38 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Player Market Value</title>
+    <title>Prediciting the Finances of Soccer</title>
+    <style>
+    body {
+        background-image: url("/Users/ayman/OneDrive/Documents/GitHub/Market-Value-Predictor/wallpaper.png");
+        font-family: Arial, sans-serif;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+    }
+    h1 {
+        margin-top: 25px;
+        color: black;
+        margin-left: 140px;
+    }
+    h2{
+        margin-top: 25px;
+        color: black;
+        margin-left: 140px;
+    }
+    h5{
+        margin-top: 25px;
+        color: orange;
+        font-weight: bold;
+        margin-left: 140px;
+    }
+    label {
+        margin-top: 25px;
+        color: black;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+        margin-left: 140px;
+    }
+    #resetbutton{
+        margin-top: 25px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-left: 35px;
+        background-color: green;
+        color: black;
+    }
+    #accur {
+        margin-top: 25px;
+        background-color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-left: 30px;
+    }
+    #accur2{
+        margin-top: 25px;
+        background-color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-left: 30px;
+    }
+    input{
+        margin-left: 140px;
+    }
+    #submit{
+        margin-top: 25px;
+        background-color: green;
+        color: black;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-left: 140px;
+    }
+    </style>
 </head>
+<h1>Predicting the Finances of Soccer</h1>
 <body>
-    <h1>Player Market Value</h1>
     <form action="{{ url_for('get_value') }}" method="POST">
+        <h2>Market Value Predictor</h2>
         <label for="player_name">Enter player name:</label>
         <input type="text" name="player_name" id="player_name" required>
-
         <br>
 
-        <label for="position">Enter position:</label>
-        <select name="position" id="position" required>
-            <option value="Attacker">Attacker</option>
-            <option value="Midfielder">Midfielder</option>
-            <option value="Defender">Defender</option>
-            <option value="Goalkeeper">Goalkeeper</option>
-        </select>
-
-        <br>
-
-        <button type="submit" name="submit">Get market value</button>
-        <button type="button" onclick="resetForm()">Reset</button>
-        <button type="button" name="accuracy"><a href="/accuracy">Accuracy</a></button>
+        <button type="submit" name="submit" id= "submit">Get market value</button>
+        <button type="button" id="resetbutton" onclick="resetForm()">Reset</button>
+        <button type="button" name="accuracy" id="accur"><a href="/accuracy">Accuracy for Market Model</a></button>
     </form>
 
+    <h5>Market Value Result:</h5>
     <p id="result">{{ result }}</p>
+
+   <form action="{{ url_for('get_value2') }}" method="POST">
+        <h2> Transfer Fee Predictor</h2>
+        <label for="transfer_player">Enter player full name:</label>
+        <input type="text" name="transfer_player" id="transfer_player" required>
+        <br>
+
+        <label for="team_name">Enter Team name:</label>
+        <input type="text" name="team_name" id="team_name" required>
+        <br>
+
+        <button type="submit" name="submit" id= "submit">Get transfer fee</button>
+        <button type="button" id="resetbutton" onclick="resetForm()">Reset</button>
+        <button type="button" name="accuracy2" id="accur2"><a href="/accuracy2">Accuracy for Transfer Model</a></button>
+        
+    </form>
+
+
+    <h5>Transfer Fee Result:</h5>
+    <p id="result2">{{ result2 }}</p>
+
+    <h5>Transfer Fee Table:</h5>
+    <p id="table">{{ table }}</p>
 
     <script>
         function resetForm() {
             document.getElementById("player_name").value = "";
-            document.getElementById("position").selectedIndex = 0;
+            document.getElementById("transfer_player").value = "";
+            document.getElementById("team_name").value = "";
             document.getElementById("result").innerHTML = "";
+            document.getElementById("result2").innerHTML = "";
+            document.getElementById("table").innerHTML = "";
         }
     </script>
 </body>
