@@ -20,7 +20,6 @@ urls <- c(
 
 leagues <- c("Premier League", "Serie A", "LaLiga", "Bundesliga","LigaNOS","Eredivisie","SuperLig","ProfessionalFootballLeague","CampeonatoBrasileiroSerieA","League 1")
 
-# Initialize an empty data frame to store the scraped data
 all_data <- data.frame()
 View(all_data)
 
@@ -91,12 +90,12 @@ league_links <- c(
 league_names <- c(
   "Premier League","Serie A","LaLiga","Bundesliga","LigaNOS","Eredivisie","SuperLig","ProfessionalFootballLeague","CampeonatoBrasileiroSerieA", "League 1")
 
-# create an empty dataframe to store the results
+
 club_df <- data.frame()
 
-# loop through the league links
+
 for (i in seq_along(league_links)) {
-  # scrape the data for the current league
+
   xpath2 <- '//*[@id="yw1"]/table'
   p <- try(
     league_links[i] %>% read_html() %>% html_element(xpath = xpath2) %>% html_table(),
@@ -107,14 +106,14 @@ for (i in seq_along(league_links)) {
   p[7] <- NULL
   p[5] <- NULL
   p <- p[-1,]
-  # add a column for the current league name
+
   p$League <- league_names[i]
   # bind the results to the club_df dataframe
   club_df <- rbind(club_df, p)
 }
 
 
-#manually adding league 1(French League)
+
 link1<-"https://www.transfermarkt.com/ligue-1/startseite/wettbewerb/FR1/plus/?saison_id=2018"
 club1<-data.frame()
 xpath3 <- '//*[@id="yw1"]/table'
@@ -133,7 +132,7 @@ p1$League <- "League 1"
 club_df <- rbind(club_df, p1)
 
 #Cleaning the club_df dataset
-# reset the row names of the club_df dataframe
+
 rownames(club_df) <- NULL
 
 # remove "FC" from all Club names in club_df
@@ -515,7 +514,6 @@ club_data$club <- gsub(" FC", "", club_data$club)
 club_data$club <- gsub("FC ", "", club_data$club)
 
 
-
 TMmid$club <- str_replace_all(TMmid$club, mapping_list)
 
 att_mid <- merge(TMmid, club_data, by = "club")
@@ -546,8 +544,6 @@ club_data$club <- gsub(" FC", "", club_data$club)
 club_data$club <- gsub("FC ", "", club_data$club)
 
 
-
-
 TMdef$club <- str_replace_all(TMdef$club, mapping_list)
 
 club_def <- merge(TMdef, club_data, by = "club")
@@ -555,12 +551,6 @@ club_def <- merge(TMdef, club_data, by = "club")
 write.csv(club_def, file ="club_def.csv", row.names = FALSE)
 
 
-
-
-
-
-
-# print the merged data frame
 print(merged_data)
 
 write.csv(TMatt, file = "TMatt.csv", row.names = FALSE)
@@ -604,7 +594,7 @@ format_name <- function(name) {
   return(formatted_name)
 }
 
-# Apply the custom function to the 'Name' column
+# Applying the custom function to the 'Name' column
 
 pl.df$Name <- sapply(pl.df$Name, format_name)
 dfm$Name<-dfm$name
